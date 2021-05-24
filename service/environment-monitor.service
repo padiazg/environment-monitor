@@ -1,0 +1,14 @@
+[Unit]
+Description=Environment monitor
+After=network.target
+
+[Service]
+ExecStart=/home/pi/environment-monitor-daemon -config environment-monitor-daemon.conf
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
