@@ -1,1 +1,4 @@
 environment-monitor-daemon
+.environment-monitor*.yaml
+.vscode
+old

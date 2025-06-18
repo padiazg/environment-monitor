@@ -1,56 +1,28 @@
+/*
+Copyright © 2025 Pato Diaz (padiazg@gmail.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
 package main
 
-import (
-	"context"
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
-
-	"github.com/d2r2/go-logger"
-	"github.com/padiazg/environment-monitor-daemon/config"
-	"github.com/padiazg/environment-monitor-daemon/monitor"
-)
-
-var lg = logger.NewPackageLogger("main", logger.InfoLevel)
+import "github.com/padiazg/environment-monitor-daemon/cmd"
 
 func main() {
-	ctx := context.Background()
-	ctx, cancel := context.WithCancel(ctx)
-
-	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
-
-	c := &config.Config{}
-
-	defer func() {
-		signal.Stop(signalChan)
-		logger.FinalizeLogger()
-		cancel()
-	}() // defer func...
-
-	go func() {
-		for {
-			select {
-			case s := <-signalChan:
-				switch s {
-				case syscall.SIGINT, syscall.SIGTERM:
-					lg.Info("Got SIGINT/SIGTERM, exiting.")
-					cancel()
-					os.Exit(1)
-				case syscall.SIGHUP:
-					lg.Info("Got SIGHUP, reloading configuration.")
-					c.Init(os.Args)
-				} // switch ...
-			case <-ctx.Done():
-				lg.Info("Done")
-				os.Exit(1)
-			} // select ...
-		} // for ...
-	}() // go func ...
-
-	if err := monitor.Run(ctx, c); err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err)
-		os.Exit(1)
-	}
-} // main ...
+	cmd.Execute()
+}

@@ -1,10 +1,29 @@
 module github.com/padiazg/environment-monitor-daemon
 
-go 1.16
+go 1.23
 
 require (
-	github.com/d2r2/go-i2c v0.0.0-20191123181816-73a8a799d6bc
-	github.com/d2r2/go-logger v0.0.0-20181221090742-9998a510495e
-	github.com/namsral/flag v1.7.4-pre
-	github.com/padiazg/go-sps30 v0.0.0-20210113153431-ded8177aa941
+	github.com/padiazg/go-zh07 v0.0.0-20250617223215-22efbe895aad
+	github.com/sirupsen/logrus v1.9.3
+	github.com/spf13/cobra v1.9.1
+	github.com/spf13/viper v1.20.1
+	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07
+	gopkg.in/yaml.v3 v3.0.1
+)
+
+require (
+	github.com/fsnotify/fsnotify v1.8.0 // indirect
+	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
+	github.com/sagikazarmark/locafero v0.7.0 // indirect
+	github.com/sourcegraph/conc v0.3.0 // indirect
+	github.com/spf13/afero v1.12.0 // indirect
+	github.com/spf13/cast v1.7.1 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
+	github.com/subosito/gotenv v1.6.0 // indirect
+	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/multierr v1.9.0 // indirect
+	golang.org/x/sys v0.29.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 )
