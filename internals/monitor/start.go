@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/padiazg/environment-monitor-daemon/internals/help"
 	"github.com/padiazg/environment-monitor-daemon/internals/models/settings"
 )
 
@@ -27,7 +28,10 @@ func Start(settings *settings.Settings) {
 	monitor := NewMonitor(settings)
 	rc, done, err := monitor.Init()
 	if err != nil {
-		log.Fatalf("Initializing driver: %+v\n", err)
+		log.Printf("Initializing driver: %+v\n", err)
+		fmt.Println("Try:")
+		help.SettingsHelp()
+		os.Exit(1)
 	}
 	defer done()
 

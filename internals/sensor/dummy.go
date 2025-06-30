@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	dummyName = "ZH07"
+	dummyName = "Dummy"
 )
 
 type Dummy struct {
@@ -15,9 +15,7 @@ type Dummy struct {
 var _ SensorInterface = (*Dummy)(nil)
 
 func NewDummy(settings *settings.DummySettings) *Dummy {
-	return &Dummy{
-		settings: settings,
-	}
+	return &Dummy{settings: settings}
 }
 
 func (d *Dummy) Init() error {
