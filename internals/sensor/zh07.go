@@ -2,11 +2,14 @@ package sensor
 
 import (
 	"bufio"
-	"fmt"
 
 	"github.com/padiazg/environment-monitor-daemon/internals/models/settings"
 	"github.com/padiazg/go-zh07"
 	"github.com/tarm/serial"
+)
+
+const (
+	zh07Name = "ZH07"
 )
 
 type ZH07 struct {
@@ -22,6 +25,10 @@ func NewZH07(settings *settings.ZH07Settings) *ZH07 {
 }
 
 func (z *ZH07) Init() error {
+	if err := z.settings.Validate(); err != nil {
+		return &SensorInvalidSettingsError{Name: zh07Name, Message: err.Error()}
+	}
+
 	// open TTY port
 	s, err := serial.OpenPort(&serial.Config{
 		Name:     z.settings.Port,
@@ -31,7 +38,7 @@ func (z *ZH07) Init() error {
 	})
 
 	if err != nil {
-		return fmt.Errorf("opening serial: %+v", err)
+		return &SensorCommunicationError{Name: zh07Name, Message: err.Error()}
 	}
 
 	z.serialPort = s
@@ -48,7 +55,7 @@ func (z *ZH07) Init() error {
 	case "initiative":
 		z.sensor = zh07.NewZH07i(&zh07.Config{RW: rw})
 	default:
-		return fmt.Errorf("unknown mode: %s", z.settings.Mode)
+		return &SensorUnknownModeError{Name: zh07Name, Message: z.settings.Mode}
 	}
 
 	return nil
@@ -57,7 +64,7 @@ func (z *ZH07) Init() error {
 func (z *ZH07) Read() (*Reading, error) {
 	r, err := z.sensor.Read()
 	if err != nil {
-		return nil, fmt.Errorf("ZH07: %+v", err)
+		return nil, &SensorReadError{Name: zh07Name, Message: err.Error()}
 	}
 
 	return &Reading{

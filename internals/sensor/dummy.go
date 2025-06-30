@@ -1,9 +1,11 @@
 package sensor
 
 import (
-	"fmt"
-
 	"github.com/padiazg/environment-monitor-daemon/internals/models/settings"
+)
+
+const (
+	dummyName = "ZH07"
 )
 
 type Dummy struct {
@@ -20,7 +22,7 @@ func NewDummy(settings *settings.DummySettings) *Dummy {
 
 func (d *Dummy) Init() error {
 	if err := d.settings.Validate(); err != nil {
-		return fmt.Errorf("initializing Dummy: %+v", err)
+		return &SensorInvalidSettingsError{Name: dummyName, Message: err.Error()}
 	}
 
 	return nil

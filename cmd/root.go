@@ -56,7 +56,7 @@ This application is meant to run in any SBC that has serial port headers or impl
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		s.Show()
+		// s.Show()
 
 		if err := s.Validate(); err != nil {
 			log.Fatalf("Validating settings: %v", err)

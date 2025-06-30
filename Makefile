@@ -26,7 +26,7 @@ build-arm64:
 	@GOOS=linux GOARCH=arm64 go build -ldflags "$(ldflags)" -o $(BINARY_NAME)-arm64
 
 # Build all architectures
-build-all: build-tools build-arm32 build-arm64
+build-all: build build-arm32 build-arm64
 	@echo "All builds completed!"
 
 # Clean build artifacts
